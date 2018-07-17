@@ -34,6 +34,8 @@ class MunitionsComponent extends React.Component {
       rocketModalOpen: false,
       gunModalOpen: false,
       tableRowDetailModalOpen: false,
+      serialVal:'',
+      nameVal:'',
       form : {
         type: 'Test'
       }
@@ -68,6 +70,8 @@ class MunitionsComponent extends React.Component {
       tableRowDetailModalOpen: !this.state.tableRowDetailModalOpen
     })
   }
+  
+  
 
   componentWillMount() {
     this.props.fetchMunitions();
@@ -149,7 +153,9 @@ class MunitionsComponent extends React.Component {
 	  },
       {
         Header: translations['serial#'],
-        accessor: 'serial'
+        accessor: 'serial',
+        filterMethod: (filter, row) =>
+                    row[filter.id].startsWith(filter.value)
       }, 
       {
         Header: translations['cocom'],
@@ -191,17 +197,20 @@ class MunitionsComponent extends React.Component {
         Header: translations['view'],
         accessor: 'view',
         filterable: false,
-        Cell: props => <span className='number'><img src="/images/general/eye_icon.png" onClick={this.tableRowDetailModal} /></span> // Custom cell components!
+        Cell: props => <span className='number'><img src="/images/general/eye_icon.png"  /></span> // Custom cell components!
       }
     ];
 
+    let serialval = this.state.serialVal;
+    let nameval = this.state.nameVal;
+
     const rowFields = [
-      {name: translations['Type'], type: 'dropdown'},
-      {name: translations['Name'], type: 'dropdown'},
-      {name: translations['Serial#'], type: 'input', valField:'123'},
-      {name: translations['COCOM'], type: 'dropdown'},
-      {name: translations['Unit'], type: 'dropdown'},
-      {name: translations['Location'], type: 'dropdown'},
+      {name: translations['Type'], type: 'dropdown', ddID:'MunitionRoles'},
+      {name: translations['Name'], type: 'input', valField:nameval},
+      {name: translations['Serial#'], type: 'input', valField:serialval},
+      {name: translations['COCOM'], type: 'dropdown', ddID:'COCOM'},
+      {name: translations['Unit'], type: 'dropdown',ddID:'Units'},
+      {name: translations['Location'], type: 'dropdown', ddID:'Locations'},
       {name: translations['Record Date'], type: 'date'},
     ];
 	
@@ -232,6 +241,29 @@ class MunitionsComponent extends React.Component {
               filterable
               defaultFilterMethod={(filter, row) =>
                 String(row[filter.id]) === filter.value}
+                getTdProps={(state, rowInfo, column, instance) => {
+                  return {
+                    onClick: e =>{
+
+                      console.log(rowInfo);
+                      console.log(column);
+
+                       if (column.Header == 'view')
+                      {
+                        this.setState({
+                          tableRowDetailModalOpen: !this.state.tableRowDetailModalOpen
+                        });
+                        this.setState({
+                          serialVal: rowInfo.original.serial,
+                          nameVal: rowInfo.original.munition
+                        });
+                      }
+
+                    }
+
+
+                  };
+                }}
             />
           </div>
         </div>

@@ -268,15 +268,15 @@ class MissileModal extends React.Component {
                   <div className="upload-content">
                     <div className="upload-line">
                       <div>
-                        {translations['Wireframe Image']}
-                      </div>
-                      <input type="file"  name="file" id="MunitionWireframe" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right" required />
-                    </div>
-                    <div className="upload-line">
-                      <div>
                         {translations['Photo Image']}
                       </div>
                       <input type="file"  name="file" id="MunitionPhoto" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right" required />
+                    </div>
+                    <div className="upload-line">
+                      <div>
+                        {translations['Wireframe Image']}
+                      </div>
+                      <input type="file"  name="file" id="MunitionWireframe" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right" required />
                     </div>
                     <div className="upload-line">
                       <div>

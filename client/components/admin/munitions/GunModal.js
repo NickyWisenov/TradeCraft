@@ -213,7 +213,7 @@ class GunModal extends React.Component {
     ];
 
     const crewFields = [
-      {name: translations['Payload Crew Count'], type: 'number', domID: 'MunitionCrewCount', valFieldID: 'MunitionCrewCount'},
+      {name: translations['Munitions Crew Count'], type: 'number', domID: 'MunitionCrewCount', valFieldID: 'MunitionCrewCount'},
       {name: translations['MOS#1'], type: 'dropdown', domID: 'dispMOS1', ddID: "MOS", valFieldID: 'MunitionMOS1'},
       {name: translations['MOS#2'], type: 'dropdown', domID: 'dispMOS2', ddID: "MOS", valFieldID: 'MunitionMOS2'},
       {name: translations['MOS#3'], type: 'dropdown', domID: 'dispMOS3', ddID: "MOS", valFieldID: 'MunitionMOS3'},
@@ -266,17 +266,17 @@ class GunModal extends React.Component {
                     <img className="mirrored-X-image" src="/images/admin/upload_1.png" alt=""/>
                   </div>
                   <div className="upload-content">
+                  <div className="upload-line">
+                      <div>
+                        {translations['Photo Image']}
+                      </div>
+                      <input type="file"  name="file" id="MunitionPhoto" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right" required />
+                    </div>
                     <div className="upload-line">
                       <div>
                         {translations['Wireframe Image']}
                       </div>
-                      <input type="file"  name="file" id="MunitionWireframe" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right"  />
-                    </div>
-                    <div className="upload-line">
-                      <div>
-                        {translations['Photo Image']}
-                      </div>
-                      <input type="file"  name="file" id="MunitionPhoto" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right"  />
+                      <input type="file"  name="file" id="MunitionWireframe" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right" required />
                     </div>
                     <div className="upload-line">
                       <div>

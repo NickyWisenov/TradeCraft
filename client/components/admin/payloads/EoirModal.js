@@ -20,6 +20,7 @@ class EoirModal extends React.Component {
     this.state = {
       file: '',
       imagePreviewUrl: '',
+      imagePreviewUrl2: '',
       payload: {
         PayloadID: '',
         PayloadReferenceCode: '',
@@ -165,6 +166,18 @@ class EoirModal extends React.Component {
         }
         reader.readAsDataURL(file)  
       }
+
+     else if(event.target.id == "PaylodWireframe") {
+        let reader = new FileReader();
+        let file = event.target.files[0];
+        reader.onloadend =() =>{
+            this.setState({
+                file:file,
+                imagePreviewUrl2: reader.result
+            });
+        }
+        reader.readAsDataURL(file)  
+      }
       
       let parametername = event.target.id;
 
@@ -201,7 +214,10 @@ class EoirModal extends React.Component {
       let inputs = document.body.getElementsByTagName('input');
       let drops = document.body.getElementsByTagName('select');
       for (let item of inputs) {
+        if (item.id != 'dropdown1')
+        {
         item.value = '';
+        }
       }
       for (let item of drops) {
         item.value = 0;
@@ -224,6 +240,16 @@ class EoirModal extends React.Component {
     } 
     else {
       $imagePreview = (<img src="/images/admin/aircraft.png" className="photo" alt=""/>);
+    }
+
+    let {imagePreviewUrl2} = this.state;
+    let $imagePreview2 = '';
+
+    if (imagePreviewUrl2) {
+      $imagePreview2 = (<img src={imagePreviewUrl2} alt="" className="photo" alt=""/>);
+    } 
+    else {
+      $imagePreview2 = (<img src="/images/admin/r2d2-1.png" className="photo" alt=""/>);
     }
 
     const {payload} = this.state;
@@ -292,10 +318,10 @@ class EoirModal extends React.Component {
               </div>
               <div className="personnel-content">
                 <div className="col-md-4 image-block">
-                  <img src="/images/admin/r2d2-1.png" className="photo" alt=""/>
+                  {$imagePreview}
                 </div>
                 <div className="col-md-4 image-block">
-                  {$imagePreview}
+                {$imagePreview2}
                 </div>
                 <div className="col-md-4 upload-block">
                   <div className="upload-imagery">
@@ -308,15 +334,15 @@ class EoirModal extends React.Component {
                   <div className="upload-content">
                     <div className="upload-line">
                       <div>
-                        {translations['Wireframe Image']}
-                      </div>
-                      <input type="file"  name="file" id="PaylodWireframe" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right" />
-                    </div>
-                    <div className="upload-line">
-                      <div>
                         {translations['Photo Image']}
                       </div>
                       <input type="file"  name="file" id="PayloadPhoto" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right" />
+                    </div>
+                    <div className="upload-line">
+                      <div>
+                        {translations['Wireframe Image']}
+                      </div>
+                      <input type="file"  name="file" id="PaylodWireframe" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right" />
                     </div>
                     <div className="upload-line">
                       <div>

@@ -6,8 +6,8 @@ import {getTranslations, addLocation, fetchLocationData} from '../../actions/act
 const mapStateToProps = state => {
   return {
     translations: state.translationsReducer,
-    location_data: state.locations.location_data,
-    fetchingLocations: state.locations.isFetching,
+    location_data: state.locationData.location_data,
+    fetchingLocations: state.locations.isFetching
   };
 };
 
@@ -23,7 +23,7 @@ const mapDispatchToProps = dispatch => {
 
     fetchLocationData: () => {
     	dispatch(fetchLocationData());
-    }
+    },
   };
 };
 

@@ -211,6 +211,7 @@ export let addPersonnel = (personnel) => {
 			}
 		)
 		.catch(error => {
+          console.log(error);
         	alert('Required Fields Mission -Please Review');
      	});
 	}
@@ -575,7 +576,7 @@ export let addLocation = (location) => {
 
   return (dispatch) => {
     dispatch(requestAddLocation());
-    return axios.post(url, qs.stringify(location), headers)
+    return axios.post(url, JSON.stringify(location), headers)
     .then(
       (response) => {
         dispatch(receiveAddLocation(response));
@@ -682,6 +683,8 @@ export function fetchLocationData() {
     .then(
       (response) => {
         dispatch(receiveLocationData(response.data));
+        console.log("Location Data is");
+        console.log(response.data);
         return response.data;
       }
     )

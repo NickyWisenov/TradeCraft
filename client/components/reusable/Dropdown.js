@@ -28,6 +28,15 @@ class Table extends React.Component {
     componentWillMount() {
         let items = [{"label": "--Select Item--", "value": 0}];
 
+        if (this.props.dropdownDataUrl === 'CrewReq') {
+			this.props.nums.map(item => {
+				items.push({"label": item['name'], "value": item['name']});
+			});
+			this.setState({
+				dropdownItems: items
+			});
+        }
+        else {
         let apiUrl = base_url + this.props.dropdownDataUrl
 		console.log('dropdown: '+apiUrl);
         axios.get(apiUrl)
@@ -42,6 +51,7 @@ class Table extends React.Component {
             .catch((error) => {
                 console.log("Exception comes:" + error);
             });
+        } 
     }
 
     changeValue = (label, value) => {
@@ -51,7 +61,7 @@ class Table extends React.Component {
     //render dropdown list of lang switcher
     renderItems() {
         return this.state.dropdownItems.map(function(data, key){  return (
-            <option key={key} value={data.value}>{data.value}</option> )
+            <option key={key} value={data.label}>{data.label}</option> )
         })
     }
 

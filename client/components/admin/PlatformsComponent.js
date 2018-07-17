@@ -91,23 +91,37 @@ class PlatformComponent extends React.Component {
         accessor: 'tail', 
         filterMethod: (filter, row) =>
                     row[filter.id].startsWith(filter.value),
+                    
+        sortMethod: (a, b) => {
+                  if (a.length === b.length) {
+                      return a > b ? 1 : -1;
+                    }
+                  return a.length > b.length ? 1 : -1;
+              }// String-based value accessors!
       },
       {
         Header: translations['Platform Name'],
         accessor: 'platform',
+        filterMethod: (filter, row) =>
+                    row[filter.id].startsWith(filter.value)
       },
       {
         Header: translations['Category'],
-        accessor: 'remark',
-
+        accessor: 'category',
+        filterMethod: (filter, row) =>
+                    row[filter.id].startsWith(filter.value)
       }, 
       {
         Header: translations['Service'],
-        accessor: 'status',
+        accessor: 'service'
       },
       {
         Header: translations['Owning Unit'],
-        accessor: 'etic',
+        accessor: 'owningunit'
+      },
+      {
+        Header: translations['Location'],
+        accessor: 'location'
       },
       {
         Header: translations['view'],
@@ -118,11 +132,12 @@ class PlatformComponent extends React.Component {
     ];
 
     const rowFields = [
-      {name: translations['Tail#'], type: 'input'},
+      {name: translations['Tail#'], type: 'input', valField:'aaa'},
       {name: translations['Platform Name'], type: 'input'},
       {name: translations['Category'], type: 'input'},
       {name: translations['Service'], type: 'input'},
       {name: translations['Owning Unit'], type: 'input'},
+      {name: translations['Location'], type: 'dropdown'},
       {name: translations['Record Date'], type: 'date'},
     ];
 

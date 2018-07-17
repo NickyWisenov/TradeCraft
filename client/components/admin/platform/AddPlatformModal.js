@@ -22,6 +22,7 @@ class AddPlatformModal extends React.Component {
     this.state = {
       file: '',
       imagePreviewUrl: '',
+      imagePreviewUrl2: '',
       platform:{
         PlatformID: '',
         PlatformWireframe: '',
@@ -242,14 +243,16 @@ class AddPlatformModal extends React.Component {
       reader.onloadend =() =>{
           this.setState({
               file:file,
+              imagePreviewUrl2: reader.result
           });
       }
       reader.readAsDataURL(file);
 
+      let parametername = event.target.id;
       this.setState({
           platform: {
               ...platform,
-              PlatformPhoto: event.target.files[0].name
+              [parametername]: event.target.files[0].name
           }
       }, () => {
           console.log("New state in ASYNC callback:", this.state.platform);
@@ -373,6 +376,8 @@ class AddPlatformModal extends React.Component {
     console.log('---here--');
     console.log(this.state.platform);
     this.props.addPlatform(this.state.platform);
+    this.props.onClose();
+    this.props.fetchPlatform(this.state.platform);
   }
 
 
@@ -408,6 +413,17 @@ class AddPlatformModal extends React.Component {
       $imagePreview = (<img src="/images/admin/aircraft.png" className="photo" alt=""/>);
     }
 
+    let {imagePreviewUrl2} = this.state;
+    let $imagePreview2 = '';
+
+    if (imagePreviewUrl2) {
+      $imagePreview2 = (<img src={imagePreviewUrl2} alt="" className="photo" alt=""/>);
+    } 
+    else {
+      $imagePreview2 = (<img src="/images/admin/primoris_backgr.png" className="photo" alt=""/>);
+    }
+
+
     const {platform} = this.state;
     const {translations: {translations}} = this.props;
 
@@ -422,12 +438,12 @@ class AddPlatformModal extends React.Component {
       {name: translations['Mission Role'], type: 'dropdown', domID: 'MissionRole', ddID: 'PlatformRoles', valFieldID:'PlatformRole'},
       {name: translations['Manufacture'], type: 'dropdown', domID: 'dispPlatformManufacture', ddID:'Manufacturer', valFieldID:'PlatformManufacturer'},
       {name: translations['Service Executive Agent'], type: 'input', domID: 'PlatformExecutiveAgent', valFieldID: 'PlatformExecutiveAgent'},
-      {name: translations['Contact Program'], type: 'input', domID:'PlatformContractProgram', valFieldID: 'PlatformContractProgram'},
+      {name: 'Contact Program', type: 'input', domID:'PlatformContractProgram', valFieldID: 'PlatformContractProgram'},
       {name: translations['Cost'], type: 'input', domID: 'PlatformCost', valFieldID: 'PlatformCost'},
       {name: translations['Cost notes'], type: 'input', domID: 'PlatformCostNotes', valFieldID: 'PlatformCostNotes'},
       {name: translations['Initial Op Capability'], type: 'date', domID: 'PlatformIOCDate', valFieldID: 'PlatformIOCDate'},
       // {name: translations['Inventory'], type: 'dropdown', domID: 'PlatformInventory', ddID: 'PlatformInventory'},
-      {name: translations['Ground Control Station'], type: 'dropdown', domID: 'PlatformGroundStation', ddID: 'PlatformGroundStation', valFieldID: 'PlatformGroundStation'},
+      {name: translations['Ground Control Station'], type: 'dropdown', domID: 'PlatformGroundStation', ddID: 'PlatformGroundStation', valFieldID: 'PlatformGroundStation', valField:'18'},
     ];
 
     const technicalFields = [
@@ -461,14 +477,14 @@ class AddPlatformModal extends React.Component {
     ];
 
     const crewFields = [
-      {name: translations['Flight Crew Req'], type: 'input', domID: 'PlatformFlightCrewReq', valFieldID: 'PlatformFlightCrewReq'},
-      {name: translations['Flight Crew Mos'], type: 'input', domID: 'PlatformFlightCrewMOS', valFieldID: 'PlatformFlightCrewMOS'},
-      {name: translations['Line Crew Req'], type: 'input', domID: 'PlatformLineCrewReq', valFieldID: 'PlatformLineCrewReq'},
-      {name: translations['Line Crew Mos'], type: 'input', domID: 'PlatformLineCrewMOS', valFieldID: 'PlatformLineCrewMOS'},
-      {name: translations['Payload Crew Req'], type: 'input', domID: 'PlatformPayloadCrewReq', valFieldID: 'PlatformPayloadCrewReq'},
-      {name: translations['Payload Crew Mos'], type: 'input', domID: 'PlatformPayloadCrewMOS', valFieldID: 'PlatformPayloadCrewMOS' },
-      {name: translations['PED Crew Req'], type: 'input', domID: 'PlatformPEDCrewReq', valFieldID: 'PlatformPEDCrewReq'},
-      {name: translations['PED Crew Mos'], type: 'input', domID: 'PlatformPEDCrewMOS', valFieldID: 'PlatformPEDCrewMOS'},
+      {name: translations['Flight Crew Req'], type: 'dropdown', domID: 'PlatformFlightCrewReq', valFieldID: 'PlatformFlightCrewReq', ddID: 'CrewReq', valField:'15'},
+      {name: translations['Flight Crew Mos'], type: 'dropdown', domID: 'PlatformFlightCrewMOS', valFieldID: 'PlatformFlightCrewMOS', ddID: 'MOS'},
+      {name: translations['Line Crew Req'], type: 'dropdown', domID: 'PlatformLineCrewReq', valFieldID: 'PlatformLineCrewReq', ddID: 'CrewReq', valField:'15'},
+      {name: translations['Line Crew Mos'], type: 'dropdown', domID: 'PlatformLineCrewMOS', valFieldID: 'PlatformLineCrewMOS', ddID: 'MOS'},
+      {name: translations['Payload Crew Req'], type: 'dropdown', domID: 'PlatformPayloadCrewReq', valFieldID: 'PlatformPayloadCrewReq', ddID: 'CrewReq', valField:'15'},
+      {name: translations['Payload Crew Mos'], type: 'dropdown', domID: 'PlatformPayloadCrewMOS', valFieldID: 'PlatformPayloadCrewMOS', ddID: 'MOS' },
+      {name: translations['PED Crew Req'], type: 'dropdown', domID: 'PlatformPEDCrewReq', valFieldID: 'PlatformPEDCrewReq', ddID: 'CrewReq', valField:'15'},
+      {name: translations['PED Crew Mos'], type: 'dropdown', domID: 'PlatformPEDCrewMOS', valFieldID: 'PlatformPEDCrewMOS', ddID: 'MOS'},
 
     ];
 
@@ -479,6 +495,30 @@ class AddPlatformModal extends React.Component {
       {name: translations['Add Munition']+" #1", type: 'dropdown', domID: 'AddMunition1', ddID: 'Munition/GetMunitions', valFieldID: 'Munition1' },
       {name: translations['Add Munition']+" #2", type: 'dropdown', domID: 'AddMunition2', ddID: 'Munition/GetMunitions', valFieldID: 'Munition2'},
       {name: translations['Add Munition']+" #3", type: 'dropdown', domID: 'AddMunition3', ddID: 'Munition/GetMunitions', valFieldID: 'Munition3'},
+    ];
+
+    const nums = [
+      {name:'0'},
+      {name:'1'},
+      {name:'2'},
+      {name:'3'},
+      {name:'4'},
+      {name:'5'},
+      {name:'6'},
+      {name:'7'},
+      {name:'8'},
+      {name:'9'},
+      {name:'10'},
+      {name:'11'},
+      {name:'12'},
+      {name:'13'},
+      {name:'14'},
+      {name:'15'},
+      {name:'16'},
+      {name:'17'},
+      {name:'18'},
+      {name:'19'},
+      {name:'20'}
     ];
 
     return (
@@ -498,8 +538,11 @@ class AddPlatformModal extends React.Component {
                 <img className="mirrored-X-image" src="/images/admin/personnel_1.png" alt=""/>
               </div>
               <div className="platform-and-munitions-content">
-                <div className="col-md-8 image-block">
+                <div className="col-md-4 image-block">
                   {$imagePreview}
+                </div>
+                <div className="col-md-4 image-block">
+                  {$imagePreview2}
                 </div>
                 <div className="col-md-4 upload-block">
                   <div className="upload-imagery">
@@ -513,33 +556,33 @@ class AddPlatformModal extends React.Component {
                   <div className="upload-content">
                     <div className="upload-line">
                       <div>
-                        {translations['Wireframe Image']}
+                        {translations['Photo Image']}
                       </div>
-                      <input type="file"  name="file" id="file" onChange= {this.handleUploadImgFile.bind(this)} className="hidden_input pull-right" required />
+                      <input type="file"  name="file" id="PlatformPhoto" onChange= {this.handleUploadImgFile.bind(this)} className="hidden_input pull-right"  />
                     </div>
                     <div className="upload-line">
                       <div>
-                        {translations['Photo Image']}
+                        {translations['Wireframe Image']}
                       </div>
-                      <input type="file"  name="file" id="file" onChange= {this.handleUploadPhotoFile.bind(this)} className="hidden_input pull-right" required />
+                      <input type="file"  name="file" id="PlatformWireframe" onChange= {this.handleUploadPhotoFile.bind(this)} className="hidden_input pull-right"  />
                     </div>
                     <div className="upload-line">
                       <div>
                         {translations['3D Model']}
                       </div>
-                      <input type="file"  name="file" id="file" onChange= {this.handleUpload3DFile.bind(this)} className="hidden_input pull-right" required />
+                      <input type="file"  name="file" id="Platform3DModel" onChange= {this.handleUpload3DFile.bind(this)} className="hidden_input pull-right" />
                     </div>
                     <div className="upload-line">
                       <div>
                         {translations['Milspec Icon']}
                       </div>
-                      <input type="file"  name="file" id="file" onChange= {this.handleUploadIconFile.bind(this)} className="hidden_input pull-right" required />
+                      <input type="file"  name="file" id="PlatformMilspec" onChange= {this.handleUploadIconFile.bind(this)} className="hidden_input pull-right"  />
                     </div>
                     <div className="upload-line">
                       <div>
                         {translations['Datasheets']}
                       </div>
-                      <input type="file"  name="file" id="file" onChange= {this.handleUploadDatasheetsFile.bind(this)} className="hidden_input pull-right" required />
+                      <input type="file"  name="file" id="file" onChange= {this.handleUploadDatasheetsFile.bind(this)} className="hidden_input pull-right"  />
                     </div>
                   </div>
                 </div>
@@ -558,7 +601,8 @@ class AddPlatformModal extends React.Component {
             <div className="row personnel" >
               <div className="under-platform-content">
                 <ContentBlock headerLine="/images/admin/upload_1.png" title={translations["Crew Requirements"]} fields={crewFields} 
-                data={this.handlePlatformCrewData} initstate ={this.state.platform}/>
+                data={this.handlePlatformCrewData} initstate ={this.state.platform} platform={nums}/>
+
                 <ContentBlock headerLine="/images/admin/upload_1.png" title={translations["Configure Aircraft"]} fields={configureFields}
 				data={this.handlePlatformConfigData} initstate ={this.state.platform}/>
               </div>

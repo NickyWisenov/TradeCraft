@@ -120,7 +120,7 @@ class ContentBlock extends React.Component {
 
                 case 'dropdown':
                     input = (
-                        <Dropdown id={item.valFieldID} dropdownDataUrl={item.ddID} labelName={item.label} finalValue={item.value} dropdownData={this.handleDropdownSelectedData}/>
+                        <Dropdown id={item.valFieldID} dropdownDataUrl={item.ddID} nums={this.props.platform} labelName={item.label} finalValue={item.value} dropdownData={this.handleDropdownSelectedData}/>
                     );
                     break;
 

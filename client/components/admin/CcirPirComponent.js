@@ -27,7 +27,7 @@ class CcirPirComponent extends React.Component {
     super(props);
     this.state={
       ccirModalOpen:false,
-      tableRowDetailModalOpen: false,
+      tableRowDetailModalOpen: false      
     }
   }
 
@@ -46,6 +46,7 @@ class CcirPirComponent extends React.Component {
   onFind(){
     console.log("find");
   }
+
 
   render() {
 
@@ -86,15 +87,21 @@ class CcirPirComponent extends React.Component {
       }, 
       {
         Header: translations['Unit'],
-        accessor: 'unit'
+        accessor: 'unit',
+        filterMethod: (filter, row) =>
+                    row[filter.id].startsWith(filter.value)
       },
       {
         Header: translations['Commander'],
-        accessor: 'commander'
+        accessor: 'commander',
+        filterMethod: (filter, row) =>
+                    row[filter.id].startsWith(filter.value)
       },  
       {
         Header: translations['Record Date'],
-        accessor: 'recorddate'
+        accessor: 'recorddate',
+        filterMethod: (filter, row) =>
+                    row[filter.id].startsWith(filter.value)
       }, 
       {
         Header: translations['view'],
@@ -138,7 +145,7 @@ class CcirPirComponent extends React.Component {
                 String(row[filter.id]) === filter.value}
             />
           </div>
-          <CcirPirModal show={this.state.ccirModalOpen} onClose={this.ccirModal} />
+          <CcirPirModal show={this.state.ccirModalOpen} onClose={this.ccirModal} onAdd={this.handleAdd}/>
           <TableRowDetailModal show={this.state.tableRowDetailModalOpen} onClose={this.tableRowDetailModal} rowdata = {rowFields} />
         </div>
       </div>

@@ -125,7 +125,7 @@ class PoiModal extends React.Component {
     event.preventDefault();
     console.log('---here--');
     console.log(this.state.location);
-    console.log()
+    this.props.addLocation(this.state.location);
     //this.props.addLocation(this.state.location);
   }
 

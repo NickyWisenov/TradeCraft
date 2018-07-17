@@ -17,6 +17,8 @@ import TableRowDetailModal from '../reusable/TableRowDetailModal';
 import "react-table/react-table.css";
 import ReactTable from 'react-table';
 
+import { makeData } from '../../actions/actions';
+
 
 class PersonnelComponent extends React.Component {
 
@@ -62,6 +64,7 @@ class PersonnelComponent extends React.Component {
 
   componentWillMount() {
     this.props.fetchLocationData();
+    
     // console.log("--here is locations fetch---");
     // console.log(data);
   }
@@ -77,6 +80,9 @@ class PersonnelComponent extends React.Component {
     ];
 
     const { location_data } = this.props;
+    
+    console.log("That data");
+    console.log(location_data);
 
     const columns = [
       {
@@ -88,7 +94,9 @@ class PersonnelComponent extends React.Component {
       },
       {
         Header: translations["Name"] ,
-        accessor: 'name'
+        accessor: 'name',
+        filterMethod: (filter, row) =>
+                    row[filter.id].startsWith(filter.value)
       },
       {
         Header: translations['COCOM'],

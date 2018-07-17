@@ -143,7 +143,7 @@ class BaseModal extends React.Component {
       data.append('file', event.target.files[0]);
       data.append('name', event.target.files[0].name);
 
-      this.props.uploadFile(data);
+    //  this.props.uploadFile(data);
   }
 
   handleSubmit = event => {
@@ -240,10 +240,10 @@ class BaseModal extends React.Component {
             </div>
             <div className="personnel-content">
               <div className="col-md-4 image-block">
-                {$mpaImage}
+                 {$locationPhoto}
               </div>
               <div className="col-md-4 image-block">
-                {$locationPhoto}
+              {$mpaImage}
               </div>
               <div className="col-md-4 upload-block">
                 <div className="upload-imagery">

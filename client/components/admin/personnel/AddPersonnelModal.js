@@ -22,6 +22,7 @@ class AddPersonnelModal extends React.Component {
         this.state = {
             file: '',
             imagePreviewUrl: '',
+            imagePreviewUrl2: '',
             personnel: {
                 PersonnelPhoto: '',
                 FirstName: '',
@@ -131,15 +132,17 @@ class AddPersonnelModal extends React.Component {
       reader.onloadend =() =>{
           this.setState({
               file:file,
-              imagePreviewUrl: reader.result
+              imagePreviewUrl2: reader.result
           });
       }
       reader.readAsDataURL(file)
 
+      let parametername = event.target.id;
+
       this.setState({
           personnel: {
               ...personnel,
-              PersonnelPhoto: event.target.files[0].name
+              [parametername]: event.target.files[0].name
           }
       }, () => {
           console.log("New state in ASYNC callback:", this.state.personnel);
@@ -151,9 +154,9 @@ class AddPersonnelModal extends React.Component {
       data.append('name', event.target.files[0].name);
 
 
-      axios.post('http://18.222.48.211:8080/api/Upload', data).then((response) => {
+  /*    axios.post('http://18.222.48.211:8080/api/Upload', data).then((response) => {
         console.log(response);
-      });
+      }); */
 
   }
 
@@ -195,6 +198,7 @@ class AddPersonnelModal extends React.Component {
         }
         reader.readAsDataURL(file)
       }
+      
 
       let parametername = event.target.id;
 
@@ -257,6 +261,16 @@ class AddPersonnelModal extends React.Component {
       $imagePreview = (<img src="/images/admin/photo_1.png" className="photo" alt=""/>);
     }
 
+    let {imagePreviewUrl2} = this.state;
+    let $imagePreview2 = '';
+
+    if (imagePreviewUrl2) {
+      $imagePreview2 = (<img src={imagePreviewUrl2} alt="" className="photo" alt=""/>);
+    }
+    else {
+      $imagePreview2 = (<img src="/images/admin/primoris_backgr.png" className="photo" alt=""/>);
+    }
+
     const {personnel} = this.state;
     const {translations: {translations}} = this.props;
 
@@ -284,9 +298,10 @@ class AddPersonnelModal extends React.Component {
         {name: translations['Duty Position#3'], type: 'dropdown', domID: 'dispDutyPosition3', ddID: "DutyPosition", valFieldID: 'DutyPosition3'},
         {name: translations['MOS#3'], type: 'dropdown', domID: 'dispMOS3', ddID: "MOS", valFieldID: 'MOS3'},
         {name: translations['Special Quats']+'1', type: 'dropdown', domID: 'dispSpecialQuals1', ddID: "SpecQuals", valFieldID: 'SpecialQuals1'},
+        {name: translations['Special Quats']+'2', type: 'dropdown', domID: 'dispSpecialQuals2', ddID: "SpecQuals", valFieldID: 'SpecialQuals2' },
         {name: translations['Dates of Current Assignment Start'], type: 'date', domID: 'CurrentAssignmentStart',  valFieldID: 'CurrentAssignmentStart'},
-        {name: translations['Dates of Current Assignment End'], type: 'date', domID: 'CurrentAssignmentEnd', valFieldID: 'CurrentAssignmentEnd' },
-        {name: translations['Special Quats']+'2', type: 'dropdown', domID: 'dispSpecialQuals2', ddID: "SpecQuals", valFieldID: 'SpecialQuals2' }
+        {name: translations['Dates of Current Assignment End'], type: 'date', domID: 'CurrentAssignmentEnd', valFieldID: 'CurrentAssignmentEnd' }
+        
     ];
 
     const contactFields = [
@@ -318,7 +333,7 @@ class AddPersonnelModal extends React.Component {
                   {$imagePreview}
                 </div>
                 <div className="col-md-4 image-block">
-                  <img src="/images/admin/primoris_backgr.png" className="photo" alt=""/>
+                  {$imagePreview2}
                 </div>
                 <div className="col-md-4 upload-block">
                   <div className="upload-imagery">
@@ -331,15 +346,21 @@ class AddPersonnelModal extends React.Component {
                   <div className="upload-content">
                     <div className="upload-line">
                       <div>
-                        {translations['Wireframe Image']}
-                      </div>
-                      <input type="file"  name="file" id="PaylodWireframe" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right" required/>
-                    </div>
-                    <div className="upload-line">
-                      <div>
                         {translations['Photo Image']}
                       </div>
                       <input type="file"  name="file" id="PayloadPhoto" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right"  required/>
+                    </div>
+                    <div className="upload-line">
+                      <div>
+                        Organization Logo
+                      </div>
+                      <input type="file"  name="file" id="PaylodWireframe" onChange= {this.handleUploadImgFile.bind(this)} className="hidden_input pull-right" required/>
+                    </div>
+                    <div className="upload-line">
+                      <div>
+                        Datasheet
+                      </div>
+                      <input type="file"  name="file" id="Datasheet" onChange= {this.handleUploadFile.bind(this)} className="hidden_input pull-right"/>
                     </div>
                   </div>
                 </div>
@@ -350,7 +371,7 @@ class AddPersonnelModal extends React.Component {
                 <ContentBlock headerLine="/images/admin/upload_1.png" title={translations["General"]}
                                       fields={generalFields} data={this.handleGeneralPersonnelData} initstate ={this.state.personnel}/>
                 <ContentBlock headerLine="/images/admin/upload_1.png"
-                              title={translations["Organisation & Duty"]} fields={organisationFields}
+                              title="Organization & Duty" fields={organisationFields}
                               data={this.handleOrganizationAndDutyData} initstate ={this.state.personnel}/>
                 <ContentBlock headerLine="/images/admin/upload_1.png"
                               title={translations["Contact Information"]} fields={contactFields}
